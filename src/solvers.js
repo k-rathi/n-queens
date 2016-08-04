@@ -44,11 +44,12 @@ window.findNQueensSolution = function(n, pastVectors) {
   //debugger;
   if (n === 0 || n === 2 || n === 3) {
     //do nothing for it shall fail
+    return matrix.rows();
   } else if (n === 1) {
     matrix.get(0)[0] = 1;
+    return matrix.rows();
   } else {
-    let queenVectors = [];
-    (function setAttacks (rowIndex) {
+    var setQueen = function (rowIndex) {
       //insert queen
       //check next row
       //if a queen passes, do next check, then keep going
@@ -56,36 +57,51 @@ window.findNQueensSolution = function(n, pastVectors) {
       //if false, reset current index from 1 to 0 and move to next entry
       //if no next entry, pass false
       //if pass on last level return matrix
+      let thisMatrix = matrix.rows();
       let row = matrix.get(rowIndex);
       let height = matrix.rows().length;
       let width = row.length;
-      for (var i = 0; i < width; i++) {
-        if (!matrix.hasAnyQueenConflictsOn(rowIndex, i)) {
-          row[i] = 1;
-          if (matrix.get(rowIndex + 1) && !setAttacks(rowIndex + 1)) {
-            row[i] = 0;
-          } else {
+      for (var i = 0; i < width; i++) { //traverse row
+        row[i] = 1; //add queen
+        if (matrix.hasAnyQueenConflictsOn(rowIndex, i)) { //if conflict
+          row[i] = 0; //remove queen, and continue to next index
+        } else { //if no conflict
+          if (matrix.get(rowIndex + 1)) { //and there is a next row
+            let pass = setQueen(rowIndex + 1); //perform setQueen on next row(s)
+            if (pass) {
+              return true;
+            } else {
+              row[i] = 0;
+            }
+          } else { //there is no next row, and we have a queen
+            if (pastVectors) {
+              return pastVectors.indexOf(JSON.stringify(matrix.rows())) === -1;
+            }
             return true;
           }
-        }
-      } if (row.indexOf(1) === -1) {
-        return false;
-      }
-    })(0);
+        } 
+      } 
+      return false; //if no queen was set in row
+    };
+    return setQueen(0) ? matrix.rows() : false;
   }
-
-  solution = matrix.rows();
-  console.log('Single solution for ' + n + ' queens:', JSON.stringify(solution));
-  return solution;
+  // solution = matrix.rows();
+  // console.log('Single solution for ' + n + ' queens:', JSON.stringify(solution));
+  // return solution;
 };
 
 
 // return the number of nxn chessboards that exist, with n queens placed such that none of them can attack each other
 window.countNQueensSolutions = function(n) {
-  var solution = undefined; //fixme
-  if (n < 4) {
-    return 0;
+  debugger;
+  var solutions = [];
+  var lastSolution = undefined;
+  var solutionCount = 0; 
+  while (lastSolution = window.findNQueensSolution(n, solutions)) {
+    solutionCount++;
+    solutions.push(JSON.stringify(lastSolution));
   }
+
   console.log('Number of solutions for ' + n + ' queens:', solutionCount);
   return solutionCount;
 };
@@ -116,4 +132,4 @@ window.countNQueensSolutions = function(n) {
       //   }
 
       // }
-      // return setAttacks(matrix, rowIndex + 1);
+      // return setQueen(matrix, rowIndex + 1);
