@@ -57,16 +57,14 @@ window.findNQueensSolution = function(n, pastVectors) {
       //if false, reset current index from 1 to 0 and move to next entry
       //if no next entry, pass false
       //if pass on last level return matrix
-      let thisMatrix = matrix.rows();
       let row = matrix.get(rowIndex);
-      let height = matrix.rows().length;
       let width = row.length;
       for (var i = 0; i < width; i++) { //traverse row
         row[i] = 1; //add queen
         if (matrix.hasAnyQueenConflictsOn(rowIndex, i)) { //if conflict
           row[i] = 0; //remove queen, and continue to next index
         } else { //if no conflict
-          if (matrix.get(rowIndex + 1)) { //and there is a next row
+          if (rowIndex + 1 < n) { //and there is a next row
             let pass = setQueen(rowIndex + 1); //perform setQueen on next row(s)
             if (pass) {
               return true;
@@ -74,9 +72,6 @@ window.findNQueensSolution = function(n, pastVectors) {
               row[i] = 0;
             }
           } else { //there is no next row, and we have a queen
-            if (pastVectors) {
-              return pastVectors.indexOf(JSON.stringify(matrix.rows())) === -1;
-            }
             return true;
           }
         } 
@@ -90,46 +85,27 @@ window.findNQueensSolution = function(n, pastVectors) {
   // return solution;
 };
 
+// window.countNQueensSolutions = function(n) {
+//   let all = (1<<n)-1; //set matrix space to 1 bitshifted left n spaces, less 1 to remove the most significant bit and set all preceeding bits to 1 (both setting the range to n and making all first-row positions considered possible)
+//   let solutionCount = 0;
+//   let _try = (ld,cols,rd) => {
+//     let possible = ~(ld | cols | rd) & all; //left diagonal, columns, and right diagonal OR together to find all taken spaces, complemented to get the open spaces, then AND with all to compare open spaces to possibilities from first row
+//     while (possible) { //while there is at least one possibility
+//       let bit = possible & -possible; //set bit to be the least significant bit out of the possibilities by performing AND on possible and -possible (two's complement)
+//       possible ^= bit; //XOR equals to remove queen placement bit from possibilities
+        
+//       _try ( //look ahead at next row placement:
+//         (ld | bit) << 1, //left diagonal attacks on next row (left bitshifted to continue down diagonal) + queen
+//         cols | bit, //occupied columns
+//         (rd | bit) >> 1) //taken right diagonal attacks (right bitshifted to continue down diagonal) + queen
+//     }
+//     solutionCount += cols === all; //if a valid solution was reached (columns filled is equal to all the columns)
+//   }
+//   _try(0, 0, 0); // 0 left diagonal collisions, 0 column collisions, 0 right diagonal collisions
+//   console.log('Number of solutions for ' + n + ' queens:', solutionCount);
+//   return solutionCount;
+// };
+ 
+ countNQueensSolutions = q=n=>{a=(1<<n)-1,s=0,t=(l,c,r)=>{let p=~(l|c|r)&a;while(p){b=p&-p;p^=b;t((l|b)<<1,c|b,(r|b)>>1)}s+=c===a};t(0,0,0);return s}
 
-// return the number of nxn chessboards that exist, with n queens placed such that none of them can attack each other
-window.countNQueensSolutions = function(n) {
-  debugger;
-  var solutions = [];
-  var lastSolution = undefined;
-  var solutionCount = 0; 
-  while (lastSolution = window.findNQueensSolution(n, solutions)) {
-    solutionCount++;
-    solutions.push(JSON.stringify(lastSolution));
-  }
-
-  console.log('Number of solutions for ' + n + ' queens:', solutionCount);
-  return solutionCount;
-};
-
-
-
-
-
-
-      // for (let i = 0; i < width; i++) {
-      //   if (!row[i]) {
-      //     for (let j = i; j < width; j++) {
-      //       row[i] = 1; 
-      //     }
-      //     let offset = 1;
-      //     for (let j = rowIndex; j < height; j++) {
-      //       let row = matrix.get(j);
-      //       row[i] = 1; 
-      //       if (i - offset >= 0) {
-      //         row[i - offset] = 1; 
-      //       } 
-      //       if (i + offset < row.length) {
-      //         row[i + offset] = 1;
-      //       }
-      //       offset++;
-      //     }
-      //     row[i] = 2; //set as queen
-      //   }
-
-      // }
-      // return setQueen(matrix, rowIndex + 1);
+ 
