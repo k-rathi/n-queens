@@ -79,8 +79,8 @@
     // test if a specific row on this board contains a conflict
     hasRowConflictAt: function(rowIndex) {
       var conflicts = 0;
-      for(var i = 0; i < this.rows().length; i++) {
-        if(this.rows()[rowIndex][i] !== 0) {
+      for (var i = 0; i < this.rows().length; i++) {
+        if (this.rows()[rowIndex][i] !== 0) {
           conflicts++;
         }
       }
@@ -89,8 +89,8 @@
 
     // test if any rows on this board contain conflicts
     hasAnyRowConflicts: function() {
-      for(var i = 0; i < this.rows().length; i++) {
-        if(this.hasRowConflictAt(i)) {
+      for (var i = 0; i < this.rows().length; i++) {
+        if (this.hasRowConflictAt(i)) {
           return true;
         }
       }
@@ -105,8 +105,8 @@
     // test if a specific column on this board contains a conflict
     hasColConflictAt: function(colIndex) {
       var conflicts = 0;
-      for(var i = 0; i < this.rows().length; i++) {
-        if(this.rows()[i][colIndex] !== 0) {
+      for (var i = 0; i < this.rows().length; i++) {
+        if (this.rows()[i][colIndex] !== 0) {
           conflicts++;
         }
       }
@@ -115,8 +115,8 @@
 
     // test if any columns on this board contain conflicts
     hasAnyColConflicts: function() {
-      for(var i = 0; i < this.rows().length; i++) {
-        if(this.hasColConflictAt(i)) {
+      for (var i = 0; i < this.rows().length; i++) {
+        if (this.hasColConflictAt(i)) {
           return true;
         }
       }
@@ -132,10 +132,10 @@
     hasMajorDiagonalConflictAt: function(majorDiagonalColumnIndexAtFirstRow) {
       var conflicts = 0;
       var rowVal = 0;
-      for(var i = majorDiagonalColumnIndexAtFirstRow; i < majorDiagonalColumnIndexAtFirstRow + this.rows().length; i++) {
-        if(this.rows().length > i > -1) {
+      for (var i = majorDiagonalColumnIndexAtFirstRow; i < majorDiagonalColumnIndexAtFirstRow + this.rows().length; i++) {
+        if (this.rows().length > i > -1) {
           var value = this.rows()[rowVal][i];
-          if(value && value !== 0) {
+          if (value && value !== 0) {
             conflicts++;
           }
         }
@@ -147,8 +147,8 @@
     // test if any major diagonals on this board contain conflicts
     hasAnyMajorDiagonalConflicts: function() {
       var j = (1 - this.rows().length);
-      for(j; j < this.rows().length; j++) {
-        if(this.hasMajorDiagonalConflictAt(j)) {
+      for (j; j < this.rows().length; j++) {
+        if (this.hasMajorDiagonalConflictAt(j)) {
           return true;
         }
       }
@@ -165,10 +165,10 @@
     hasMinorDiagonalConflictAt: function(minorDiagonalColumnIndexAtFirstRow) {
       var conflicts = 0;
       var rowVal = 0;
-      for(var i = minorDiagonalColumnIndexAtFirstRow; i > minorDiagonalColumnIndexAtFirstRow - this.rows().length; i--) {
-        if(this.rows().length > i > -1) {
+      for (var i = minorDiagonalColumnIndexAtFirstRow; i > minorDiagonalColumnIndexAtFirstRow - this.rows().length; i--) {
+        if (this.rows().length > i > -1) {
           var value = this.rows()[rowVal][i];
-          if(value && value !== 0) {
+          if (value && value !== 0) {
             conflicts++;
           }
         }
@@ -179,8 +179,8 @@
 
     // test if any minor diagonals on this board contain conflicts
     hasAnyMinorDiagonalConflicts: function() {
-      for(var j = 0; j < 2*this.rows().length-1; j++) {
-        if(this.hasMinorDiagonalConflictAt(j)) {
+      for (var j = 0; j < 2 * this.rows().length - 1; j++) {
+        if (this.hasMinorDiagonalConflictAt(j)) {
           return true;
         }
       }
